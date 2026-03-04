@@ -7,6 +7,10 @@
 #include <filesystem>
 #include <map>
 
+struct Game {
+    std::string name;
+    std::filesystem::path path;
+};
 
 class GameLocator {
     public:
@@ -14,10 +18,15 @@ class GameLocator {
     ~GameLocator() = default;
 
     static void initialise();
+
+    // Getters
+
+
 private:
     static void initialiseLinuxSteamPath();
+    static void findHL2RTXPath();
 
-    static std::map<std::string, std::filesystem::path> games;
+    static Game game;
     static std::filesystem::path steamPath;
 };
 

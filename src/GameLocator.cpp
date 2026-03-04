@@ -8,14 +8,19 @@
 #include <unistd.h>
 #include <pwd.h>
 
-std::map<std::string, std::filesystem::path> GameLocator::games;
+Game GameLocator::game;
 std::filesystem::path GameLocator::steamPath;
 
 void GameLocator::initialise() {
+    std::cout << "Finding steam path..." << std::endl;
 #ifdef __linux__
     initialiseLinuxSteamPath();
 #endif
-    std::cout << "Found steam path: " << steamPath.string() << std::endl;
+    std::cout << "Found steam path: " << steamPath << std::endl;
+
+    std::cout << "Finding HL2RTX..." << std::endl;
+    findHL2RTXPath();
+    std::cout << "Found HL2RTX: " << std::filesystem::path (steamPath / game.path) << std::endl;
 }
 
 void GameLocator::initialiseLinuxSteamPath() {
@@ -34,5 +39,14 @@ void GameLocator::initialiseLinuxSteamPath() {
         / ".local" / "share"/ "com" / "Steam");
     if (std::filesystem::exists(tryPath)) {
         steamPath = tryPath;
+    }
+}
+
+void GameLocator::findHL2RTXPath() {
+    std::filesystem::path tryPath{std::filesystem::path("steamapps") / "common" / "Half-Life 2 RTX"};
+    if (std::filesystem::exists(steamPath / tryPath)) {
+        game.name = tryPath.filename().string();
+
+        game.path = tryPath;
     }
 }
