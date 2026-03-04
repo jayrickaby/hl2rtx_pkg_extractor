@@ -20,7 +20,7 @@ class GameLocator {
     static void initialise();
 
     // Getters
-
+    static Game* getGame();
 
 private:
     static void initialiseLinuxSteamPath();
@@ -28,6 +28,8 @@ private:
 
     static Game game;
     static std::filesystem::path steamPath;
+
+    static bool initialised;
 };
 
 

@@ -11,6 +11,8 @@
 Game GameLocator::game;
 std::filesystem::path GameLocator::steamPath;
 
+bool GameLocator::initialised = false;
+
 void GameLocator::initialise() {
     std::cout << "Finding steam path..." << std::endl;
 #ifdef __linux__
@@ -21,8 +23,9 @@ void GameLocator::initialise() {
     std::cout << "Finding HL2RTX..." << std::endl;
     findHL2RTXPath();
     std::cout << "Found HL2RTX: " << std::filesystem::path (steamPath / game.path) << std::endl;
-}
 
+    initialised = true;
+}
 void GameLocator::initialiseLinuxSteamPath() {
     const char *homedir = getpwuid(getuid())->pw_dir;
     if (!homedir) {
@@ -41,7 +44,6 @@ void GameLocator::initialiseLinuxSteamPath() {
         steamPath = tryPath;
     }
 }
-
 void GameLocator::findHL2RTXPath() {
     std::filesystem::path tryPath{std::filesystem::path("steamapps") / "common" / "Half-Life 2 RTX"};
     if (std::filesystem::exists(steamPath / tryPath)) {
@@ -49,4 +51,11 @@ void GameLocator::findHL2RTXPath() {
 
         game.path = tryPath;
     }
+}
+
+Game* GameLocator::getGame() {
+    if (!initialised) {
+        throw std::runtime_error("Game Locater not initialised!");
+    }
+    return &game;
 }
