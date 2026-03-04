@@ -1,17 +1,22 @@
 #include <QApplication>
-#include <QPushButton>
+#include <QMainWindow>
 
 #include "GameLocator.h"
+#include "ui/ui_main.h"
 
-int main(int argc, char *argv[]) {
-    QApplication app(argc, argv);
-    QWidget window;
-    window.resize(640, 480);
-    window.show();
-    window.setWindowTitle(
-        QApplication::translate("mainWindowTitle", "HL2RTX PKG Extractor"));
-
+int main (int argc, char *argv[]) {
     GameLocator::initialise();
 
-    return QApplication::exec();
+    QApplication app (argc, argv);
+
+    QMainWindow window;
+    Ui::MainWindow ui;
+    ui.setupUi(&window);
+
+    window.setWindowTitle("HL2RTX PKG Extractor");
+
+    ui.gamesBox->addItem(QString::fromStdString(GameLocator::getGame()->name));
+
+    window.show();
+    return app.exec();
 }
