@@ -21,6 +21,7 @@ class GameLocator {
 
     // Getters
     static Game* getGame();
+    static std::filesystem::path getSteamPath();
 
 private:
     static void initialiseLinuxSteamPath();

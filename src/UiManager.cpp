@@ -47,6 +47,9 @@ void UiManager::setupUi() {
     updateUserInput(ui.inputType->currentIndex());
 
     ui.inputGame->addItem(QString::fromStdString(GameLocator::getGame()->name));
+
+    std::filesystem::path icoPath{GameLocator::getSteamPath() / GameLocator::getGame()->path / "hl2" / "resource" / "game.ico"};
+    ui.inputGame->setItemIcon(0, QIcon(icoPath.c_str()));
 }
 
 bool UiManager::isInitialised() const {

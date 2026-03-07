@@ -59,3 +59,7 @@ Game* GameLocator::getGame() {
     }
     return &game;
 }
+
+std::filesystem::path GameLocator::getSteamPath() {
+    return steamPath;
+}
